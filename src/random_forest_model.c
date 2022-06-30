@@ -14,7 +14,7 @@
    limitations under the License.
 */
 
-int classifier2(float * x){
+int classifier(float * x){
   int results[100];
   if (x[9] <= 37.5000000000) {
     if (x[4] <= 0.0149999997) {
