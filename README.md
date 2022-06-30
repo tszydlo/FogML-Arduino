@@ -5,7 +5,7 @@
 ![Processing pipeline](./doc/pipeline.png)
 
 ```
-@misc{https://doi.org/10.48550/arxiv.2206.14265,
+@misc{OnlineAnomalySzydlo2022,
   doi = {10.48550/ARXIV.2206.14265},
   url = {https://arxiv.org/abs/2206.14265},
   author = {Szydlo, Tomasz},
@@ -22,7 +22,7 @@
 ![Classification pipeline](./doc/classification.png)
 
 ```
-@inproceedings{DBLP:conf/iccS/SzydloSB18,
+@inproceedings{FogMLSzydlo2018,
   author    = {Tomasz Szydlo and
                Joanna Sendorek and
                Robert Brzoza{-}Woch},
