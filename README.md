@@ -1,5 +1,9 @@
 # FogML-Arduino
 
+Example of anomaly detection and classification algorithms provided by the FogML project. It uses:
+* FogML-SDK [https://github.com/tszydlo/fogml_sdk]
+* FogML tools [https://github.com/tszydlo/FogML]
+
 ## Online Anomaly Detection
 
 ![Processing pipeline](./doc/pipeline.png)
