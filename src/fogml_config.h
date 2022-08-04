@@ -130,7 +130,7 @@ void fogml_classification(float *time_series_data) {
     tinyml_dsp(time_series_data, vector, &my_dsp_config);
     int cl;
 
-    cl = classifier2(vector);
+    cl = classifier(vector);
 
 #ifdef FOGML_VERBOSE
     fogml_printf("Detected  class = ");
