@@ -4,6 +4,8 @@ Example of anomaly detection and classification algorithms provided by the FogML
 * FogML-SDK [https://github.com/tszydlo/fogml_sdk]
 * FogML tools [https://github.com/tszydlo/FogML]
 
+More details of the application and used algorithms are described in the paper https://arxiv.org/abs/2206.14265 .
+
 ## Online Anomaly Detection
 
 ![Processing pipeline](./doc/pipeline.png)
