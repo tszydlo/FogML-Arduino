@@ -4,6 +4,7 @@
 #include <Arduino_APDS9960.h>
 
 //#define DATA_LOGGER
+//#define DATA_CLASSIFICATION
 //#define DEBUG
 
 #include "fogml_config.h"
@@ -119,6 +120,7 @@ void loop()
       fogml_features_logger(my_time_series);
 #else
       if (learning) {
+        Serial.println("LEARNING");
         led_all_off();
         digitalWrite(BLUE, LOW);
         fogml_learning(my_time_series);
@@ -131,9 +133,12 @@ void loop()
           digitalWrite(BLUE, HIGH);
         }
       } else {
+        Serial.print("*");
         fogml_processing(my_time_series, &score);
 
+#ifdef DATA_CLASSIFICATION
         fogml_classification(my_time_series);
+#endif
 
         if (score > 2.5) {
           digitalWrite(RED, LOW);

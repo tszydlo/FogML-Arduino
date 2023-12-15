@@ -22,12 +22,15 @@ extern "C" {
 
 // DATA ACQUISITION
 // accelerometer data X, Y, Z
+//define ACC_TIME_TICKS  32
 #define ACC_TIME_TICKS  64
 #define ACC_AXIS  3
+#define ACC_FREQ  119
 
 // DIGITAL SIGNAL PROCESSING
 // number of features - depends on the DSP blocks
-#define FOGML_VECTOR_SIZE ((TINYML_DSP_BASE_LEN + TINYML_DSP_ENERGY_LEN + TINYML_DSP_CROSSINGS_LEN) * ACC_AXIS)
+// #define FOGML_VECTOR_SIZE ((TINYML_DSP_BASE_LEN + TINYML_DSP_ENERGY_LEN + TINYML_DSP_CROSSINGS_LEN) * ACC_AXIS)
+ #define FOGML_VECTOR_SIZE ((TINYML_DSP_FFT_LEN) * ACC_AXIS)
 
 //BLOCK 1 - BASE
 tinyml_block_base_config_t block1_config;
@@ -63,6 +66,30 @@ tinyml_dsp_config_t my_dsp_config = {
     .blocks = blocks_tab
 };
 
+
+//DSP FFT config
+tinyml_block_fft_config_t block_fft_config = {
+    .freq = ACC_FREQ,
+    .treshold = 0.01
+};
+
+tinyml_dsp_block_t block_fft = {
+    .type = TINYML_DSP_FFT,
+    .config = &block_fft_config
+};
+
+
+tinyml_dsp_block_t *blocks_fft_tab[] = {&block_fft};
+
+tinyml_dsp_config_t my_dsp_fft_config = {
+    .time_ticks = ACC_TIME_TICKS,    
+    .axis_n = 3,
+    .blocks_num = 1,
+    .blocks = blocks_fft_tab
+};
+
+
+
 // RESERVOIR SAMPLING
 #define MY_RESERVOIR_SIZE  100
 float my_reservoir[MY_RESERVOIR_SIZE * FOGML_VECTOR_SIZE];
@@ -96,7 +123,8 @@ void fogml_learning(float *time_series_data) {
     
     float *vector = (float*)malloc(sizeof(float) * FOGML_VECTOR_SIZE);
     
-    tinyml_dsp(time_series_data, vector, &my_dsp_config);
+    //tinyml_dsp(time_series_data, vector, &my_dsp_config);
+    tinyml_dsp(time_series_data, vector, &my_dsp_fft_config);
 
     tinyml_reservoir_sampling(vector, &my_rs_config);
 
@@ -117,7 +145,8 @@ void fogml_learning(float *time_series_data) {
 
 void fogml_processing(float *time_series_data, float *score) {
     float *vector = (float*)malloc(sizeof(float) * FOGML_VECTOR_SIZE);
-    tinyml_dsp(time_series_data, vector, &my_dsp_config);
+    //tinyml_dsp(time_series_data, vector, &my_dsp_config);
+    tinyml_dsp(time_series_data, vector, &my_dsp_fft_config);
 
 #ifdef FOGML_VERBOSE
     for(int i = 0; i < FOGML_VECTOR_SIZE; i++) {
@@ -156,7 +185,8 @@ void fogml_classification(float *time_series_data) {
 
 void fogml_features_logger(float *time_series_data) {
     float *vector = (float*)malloc(sizeof(float) * FOGML_VECTOR_SIZE);
-    tinyml_dsp(time_series_data, vector, &my_dsp_config);
+    //tinyml_dsp(time_series_data, vector, &my_dsp_config);
+    tinyml_dsp(time_series_data, vector, &my_dsp_fft_config);
 
     for(int i = 0; i < FOGML_VECTOR_SIZE; i++) {
         fogml_printf_float(vector[i]);
